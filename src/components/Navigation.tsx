@@ -147,6 +147,32 @@ export const Navigation: React.FC<NavigationProps> = ({
                   <button
                     onClick={() => {
                       setIsProfileMenuOpen(false);
+                      onNavigate('staff');
+                    }}
+                    className="w-full px-4 py-2 text-left text-xs font-semibold text-[#3e4947] hover:bg-[#f1f4f3] flex items-center gap-2.5 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-lg text-[#005c55]">
+                      badge
+                    </span>
+                    <span>Manajemen Staff & Kasir</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      onNavigate('suppliers');
+                    }}
+                    className="w-full px-4 py-2 text-left text-xs font-semibold text-[#3e4947] hover:bg-[#f1f4f3] flex items-center gap-2.5 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-lg text-[#005c55]">
+                      local_shipping
+                    </span>
+                    <span>Pemasok & Distributor</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
                       onNavigate('customers');
                     }}
                     className="w-full px-4 py-2 text-left text-xs font-semibold text-[#3e4947] hover:bg-[#f1f4f3] flex items-center gap-2.5 transition-colors"
@@ -168,6 +194,19 @@ export const Navigation: React.FC<NavigationProps> = ({
                       warehouse
                     </span>
                     <span>Lokasi Gudang & Transfer</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      onNavigate('stores');
+                    }}
+                    className="w-full px-4 py-2 text-left text-xs font-semibold text-[#3e4947] hover:bg-[#f1f4f3] flex items-center gap-2.5 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-lg text-[#005c55]">
+                      storefront
+                    </span>
+                    <span>Manajemen Cabang & Toko</span>
                   </button>
 
                   <div className="border-t border-[#bdc9c6]/50 my-1" />
@@ -223,10 +262,10 @@ export const Navigation: React.FC<NavigationProps> = ({
       </header>
 
       {/* Bottom Sticky Navigation Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-[#bdc9c6] z-50 flex items-center justify-around px-2 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-[#bdc9c6] z-50 flex items-center justify-start md:justify-around px-2 overflow-x-auto no-scrollbar shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
         <button
           onClick={() => onNavigate('dashboard')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
             activeTab === 'dashboard' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
           }`}
         >
@@ -242,7 +281,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         <button
           onClick={() => onNavigate('pos')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
             activeTab === 'pos' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
           }`}
         >
@@ -258,7 +297,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         <button
           onClick={() => onNavigate('cart')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors relative ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors relative shrink-0 ${
             activeTab === 'cart' || activeTab === 'checkout' || activeTab === 'receipt'
               ? 'text-[#005c55] font-bold'
               : 'text-[#6e7977] hover:text-[#005c55]'
@@ -283,7 +322,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         <button
           onClick={() => onNavigate('inventory')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
             activeTab === 'inventory' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
           }`}
         >
@@ -298,8 +337,40 @@ export const Navigation: React.FC<NavigationProps> = ({
         </button>
 
         <button
+          onClick={() => onNavigate('staff')}
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
+            activeTab === 'staff' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl md:text-2xl ${
+              activeTab === 'staff' ? 'filled text-[#005c55]' : ''
+            }`}
+          >
+            badge
+          </span>
+          <span className="text-[10px] tracking-tight">Staff</span>
+        </button>
+
+        <button
+          onClick={() => onNavigate('suppliers')}
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
+            activeTab === 'suppliers' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl md:text-2xl ${
+              activeTab === 'suppliers' ? 'filled text-[#005c55]' : ''
+            }`}
+          >
+            local_shipping
+          </span>
+          <span className="text-[10px] tracking-tight">Pemasok</span>
+        </button>
+
+        <button
           onClick={() => onNavigate('customers')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
             activeTab === 'customers' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
           }`}
         >
@@ -315,7 +386,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         <button
           onClick={() => onNavigate('warehouse')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
             activeTab === 'warehouse' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
           }`}
         >
@@ -330,8 +401,24 @@ export const Navigation: React.FC<NavigationProps> = ({
         </button>
 
         <button
+          onClick={() => onNavigate('stores')}
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
+            activeTab === 'stores' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
+          }`}
+        >
+          <span
+            className={`material-symbols-outlined text-xl md:text-2xl ${
+              activeTab === 'stores' ? 'filled text-[#005c55]' : ''
+            }`}
+          >
+            storefront
+          </span>
+          <span className="text-[10px] tracking-tight">Cabang</span>
+        </button>
+
+        <button
           onClick={() => onNavigate('reports')}
-          className={`flex flex-col items-center justify-center w-full h-full gap-0.5 transition-colors ${
+          className={`flex flex-col items-center justify-center min-w-[60px] md:w-full h-full gap-0.5 transition-colors shrink-0 ${
             activeTab === 'reports' ? 'text-[#005c55] font-bold' : 'text-[#6e7977] hover:text-[#005c55]'
           }`}
         >

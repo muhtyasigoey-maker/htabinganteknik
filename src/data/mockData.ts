@@ -1,4 +1,4 @@
-import { Product, Customer, Transaction, Warehouse, StockActivity } from '../types';
+import { Product, Customer, Transaction, Warehouse, StockActivity, StaffMember, Supplier, StoreBranch } from '../types';
 
 export const INITIAL_PRODUCTS: Product[] = [
   {
@@ -191,11 +191,84 @@ export const INITIAL_PRODUCTS: Product[] = [
 ];
 
 export const INITIAL_CUSTOMERS: Customer[] = [
-  { id: 'c1', name: 'Umum (Default)', type: 'Pelanggan Langsung' },
-  { id: 'c2', name: 'Budi Santoso', type: 'Kontraktor Perorangan', phone: '0812-3456-7890' },
-  { id: 'c3', name: 'UD Bangunan Jaya', type: 'Mitra Toko / Grosir', phone: '0821-9876-5432' },
-  { id: 'c4', name: 'PT Konstruksi Utama', type: 'Perusahaan B2B', phone: '021-555-9988' },
-  { id: 'c5', name: 'Pak Hendra Mandiri', type: 'Tukang Langganan', phone: '0857-1122-3344' }
+  {
+    id: 'c1',
+    code: 'PLG-001',
+    name: 'Umum (Default Walk-in)',
+    type: 'Pelanggan Langsung',
+    phone: '0800-111-222',
+    email: 'walkin@customer.com',
+    address: 'Toko Kasir Langsung',
+    status: 'Aktif',
+    totalTransactions: 154,
+    totalSpent: 12500000,
+    createdAt: '10 Jan 2023',
+  },
+  {
+    id: 'c2',
+    code: 'PLG-002',
+    name: 'Budi Santoso (CV Karya Mandiri)',
+    type: 'Kontraktor Perorangan',
+    phone: '0812-3456-7890',
+    email: 'budi.kontraktor@gmail.com',
+    address: 'Jl. Merdeka No. 45, Jakarta Barat',
+    status: 'Aktif',
+    totalTransactions: 28,
+    totalSpent: 45800000,
+    createdAt: '15 Mar 2023',
+  },
+  {
+    id: 'c3',
+    code: 'PLG-003',
+    name: 'UD Bangunan Jaya Utama',
+    type: 'Mitra Toko / Grosir',
+    phone: '0821-9876-5432',
+    email: 'ud.bangunanjaya@yahoo.com',
+    address: 'Ruko Pertokoan Maju Bersama No. 12, Bekasi',
+    status: 'Aktif',
+    totalTransactions: 42,
+    totalSpent: 98200000,
+    createdAt: '01 Feb 2023',
+  },
+  {
+    id: 'c4',
+    code: 'PLG-004',
+    name: 'PT Konstruksi Utama Indonesia',
+    type: 'Perusahaan B2B',
+    phone: '021-555-9988',
+    email: 'procurement@konstruksiutama.co.id',
+    address: 'Gedung Menara Palma Lt. 15, Kuningan, Jakarta Selatan',
+    status: 'Aktif',
+    totalTransactions: 19,
+    totalSpent: 185000000,
+    createdAt: '20 Mei 2023',
+  },
+  {
+    id: 'c5',
+    code: 'PLG-005',
+    name: 'Pak Hendra Mandiri',
+    type: 'Tukang Langganan',
+    phone: '0857-1122-3344',
+    email: 'hendra.tukang@gmail.com',
+    address: 'Jl. Kebon Jeruk No. 88, Jakarta Barat',
+    status: 'Aktif',
+    totalTransactions: 65,
+    totalSpent: 18400000,
+    createdAt: '12 Aug 2023',
+  },
+  {
+    id: 'c6',
+    code: 'PLG-006',
+    name: 'Toko Bangunan Sumber Rejeki',
+    type: 'Mitra Toko / Grosir',
+    phone: '0813-8877-6655',
+    email: 'sumberrejeki@tokomat.com',
+    address: 'Jl. Raya Bogor Km 28, Depok',
+    status: 'Aktif',
+    totalTransactions: 31,
+    totalSpent: 62400000,
+    createdAt: '05 Sep 2023',
+  },
 ];
 
 export const DEFAULT_CUSTOMER: Customer = INITIAL_CUSTOMERS[0];
@@ -285,24 +358,36 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
 export const INITIAL_WAREHOUSES: Warehouse[] = [
   {
     id: 'w1',
+    code: 'GDG-JKT-01',
     name: 'Gudang Utama - Jakarta',
-    location: 'Kawasan Industri Pulogadung, Jakarta Timur',
+    location: 'Pulogadung, Jakarta Timur',
+    address: 'Kawasan Industri Pulogadung Blok B No. 18, Jakarta Timur',
+    manager: 'Dede Saputra (Kepala Gudang)',
+    phone: '021-4600-990',
     totalStock: 45820,
     capacityPercentage: 78,
     status: 'ACTIVE'
   },
   {
     id: 'w2',
+    code: 'GDG-BKS-02',
     name: 'Gudang Cabang - Bekasi',
-    location: 'Kawasan Industri Jababeka, Cikarang',
+    location: 'Cikarang, Bekasi',
+    address: 'Kawasan Industri Jababeka V Blok C-12, Cikarang, Bekasi',
+    manager: 'Agus Setiawan',
+    phone: '021-8988-123',
     totalStock: 8210,
     capacityPercentage: 62,
     status: 'ACTIVE'
   },
   {
     id: 'w3',
+    code: 'GDG-TNG-03',
     name: 'Gudang Cabang - Tangerang',
-    location: 'Kawasan Pergudangan BSD, Tangerang',
+    location: 'BSD, Tangerang Selatan',
+    address: 'Kawasan Pergudangan BSD Multiguna Blok D No. 5, Tangerang',
+    manager: 'Rudi Hartono',
+    phone: '021-5370-888',
     totalStock: 12450,
     capacityPercentage: 91,
     status: 'ACTIVE'
@@ -341,4 +426,254 @@ export const INITIAL_STOCK_ACTIVITIES: StockActivity[] = [
 
 export const WAREHOUSES = INITIAL_WAREHOUSES;
 export const RECENT_ACTIVITIES = INITIAL_STOCK_ACTIVITIES;
+
+export const INITIAL_STAFF: StaffMember[] = [
+  {
+    id: 'st_1',
+    name: 'Admin Utama',
+    email: 'admin@tabingan.com',
+    username: 'admin',
+    password: 'admin123',
+    phone: '0812-8899-7700',
+    role: 'Admin POS',
+    status: 'Aktif',
+    shift: 'Full Time',
+    avatar: 'AU',
+    joinDate: '15 Jan 2022',
+    totalTransactions: 1420,
+    pin: '1234'
+  },
+  {
+    id: 'st_2',
+    name: 'Haji Tabingan',
+    email: 'tabingan@teknik.co.id',
+    username: 'kepalatoko',
+    password: 'toko123',
+    phone: '0811-9000-111',
+    role: 'Kepala Toko',
+    status: 'Aktif',
+    shift: 'Full Time',
+    avatar: 'HT',
+    joinDate: '01 Jan 2020',
+    totalTransactions: 890,
+    pin: '8888'
+  },
+  {
+    id: 'st_3',
+    name: 'Budi Kurniawan',
+    email: 'budi.kasir@tabingan.com',
+    username: 'kasir',
+    password: 'kasir123',
+    phone: '0857-3344-5566',
+    role: 'Kasir',
+    status: 'Aktif',
+    shift: 'Pagi (08:00 - 16:00)',
+    avatar: 'BK',
+    joinDate: '10 Feb 2023',
+    totalTransactions: 654,
+    pin: '2024'
+  },
+  {
+    id: 'st_4',
+    name: 'Siti Rahmawati',
+    email: 'siti.kasir@tabingan.com',
+    username: 'siti',
+    password: 'kasir123',
+    phone: '0813-2211-9988',
+    role: 'Kasir',
+    status: 'Aktif',
+    shift: 'Sore (16:00 - 22:00)',
+    avatar: 'SR',
+    joinDate: '01 Jun 2023',
+    totalTransactions: 412,
+    pin: '1122'
+  },
+  {
+    id: 'st_5',
+    name: 'Dede Saputra',
+    email: 'dede.gudang@tabingan.com',
+    username: 'gudang',
+    password: 'gudang123',
+    phone: '0822-7766-5544',
+    role: 'Staf Gudang',
+    status: 'Aktif',
+    shift: 'Pagi (08:00 - 16:00)',
+    avatar: 'DS',
+    joinDate: '12 Aug 2023',
+    totalTransactions: 128,
+    pin: '5566'
+  },
+  {
+    id: 'st_6',
+    name: 'Rian Pratama',
+    email: 'rian.spv@tabingan.com',
+    username: 'supervisor',
+    password: 'spv123',
+    phone: '0818-4455-6677',
+    role: 'Supervisor',
+    status: 'Cuti',
+    shift: 'Full Time',
+    avatar: 'RP',
+    joinDate: '05 Mar 2021',
+    totalTransactions: 310,
+    pin: '9900'
+  }
+];
+
+export const INITIAL_SUPPLIERS: Supplier[] = [
+  {
+    id: 'sup_1',
+    code: 'SUP-SEM-001',
+    name: 'PT Semen Indonesia (Persero) Tbk',
+    contactPerson: 'Bpk. Aris Setiawan',
+    category: 'Semen & Material Bangunan',
+    phone: '021-5261111',
+    email: 'sales@semenindonesia.com',
+    address: 'Gedung Utama Semen Indonesia, Lt. 8, Jl. Veteran, Jakarta Selatan',
+    paymentTerms: 'Tempo 30 Hari',
+    status: 'Aktif',
+    totalOrders: 48,
+    totalPurchases: 185000000,
+    rating: 4.9
+  },
+  {
+    id: 'sup_2',
+    code: 'SUP-TKR-002',
+    name: 'PT Altama Surya Anugerah (Tekiro Tools)',
+    contactPerson: 'Ibu Hendra Wijaya',
+    category: 'Perkakas Handtools',
+    phone: '021-6902288',
+    email: 'info@tekirortools.co.id',
+    address: 'Kawasan Industri Bandara Soekarno Hatta, Tangerang',
+    paymentTerms: 'Tempo 14 Hari',
+    status: 'Aktif',
+    totalOrders: 32,
+    totalPurchases: 94500000,
+    rating: 4.8
+  },
+  {
+    id: 'sup_3',
+    code: 'SUP-PRP-003',
+    name: 'PT Propan Raya I.C.C. (Cat & Coating)',
+    contactPerson: 'Bpk. Yudi Santoso',
+    category: 'Cat & Aksesoris',
+    phone: '021-59303333',
+    email: 'order@propanraya.com',
+    address: 'Jl. Raya Serang Km 12.5, Cikupa, Tangerang',
+    paymentTerms: 'Tempo 30 Hari',
+    status: 'Aktif',
+    totalOrders: 26,
+    totalPurchases: 68200000,
+    rating: 4.7
+  },
+  {
+    id: 'sup_4',
+    code: 'SUP-WAV-004',
+    name: 'PT Wavin Duta Jaya (Pipa & Fitting PVC)',
+    contactPerson: 'Ibu Lina Kusuma',
+    category: 'Pipa & Plumbing',
+    phone: '021-8983000',
+    email: 'distributor@wavin.co.id',
+    address: 'Kawasan Industri MM2100, Cibitung, Bekasi',
+    paymentTerms: 'Tempo 30 Hari',
+    status: 'Aktif',
+    totalOrders: 19,
+    totalPurchases: 52000000,
+    rating: 4.6
+  },
+  {
+    id: 'sup_5',
+    code: 'SUP-SCH-005',
+    name: 'PT Schneider Electric Indonesia',
+    contactPerson: 'Bpk. Michael Hartono',
+    category: 'Kabel & Peralatan Listrik',
+    phone: '021-2988888',
+    email: 'cs.id@se.com',
+    address: 'Cilandak Commercial Estate Building 401, Jakarta Selatan',
+    paymentTerms: 'Cash On Delivery',
+    status: 'Aktif',
+    totalOrders: 14,
+    totalPurchases: 41000000,
+    rating: 4.9
+  },
+  {
+    id: 'sup_6',
+    code: 'SUP-BOS-006',
+    name: 'PT Robert Bosch Indonesia (Power Tools)',
+    contactPerson: 'Bpk. David Kurnia',
+    category: 'Power Tools & Aksesoris',
+    phone: '021-3005500',
+    email: 'powertools.id@bosch.com',
+    address: 'Menara BTPN Lt. 31, Mega Kuningan, Jakarta Selatan',
+    paymentTerms: 'Tempo 60 Hari',
+    status: 'Aktif',
+    totalOrders: 22,
+    totalPurchases: 87500000,
+    rating: 4.8
+  }
+];
+
+export const INITIAL_STORES: StoreBranch[] = [
+  {
+    id: 'store_1',
+    code: 'CBG-JKT-01',
+    name: 'Toko H. Tabingan Teknik (Pusat - Jakarta)',
+    address: 'Jl. Raya Industri Pulogadung No. 88, Jakarta Timur',
+    city: 'Jakarta Timur',
+    phone: '021-4600-8888',
+    manager: 'Haji Tabingan (Owner & Kepala Toko)',
+    type: 'Pusat',
+    status: 'Aktif',
+    totalCashiers: 5,
+    monthlyTarget: 500000000,
+    monthlyRevenue: 485000000,
+    openHours: '07:30 - 18:00 WIB'
+  },
+  {
+    id: 'store_2',
+    code: 'CBG-BKS-02',
+    name: 'Toko H. Tabingan Teknik (Cabang Bekasi)',
+    address: 'Jl. Raya Kartini No. 42, Bekasi Barat',
+    city: 'Bekasi',
+    phone: '021-8890-1234',
+    manager: 'Dede Saputra',
+    type: 'Cabang Utama',
+    status: 'Aktif',
+    totalCashiers: 3,
+    monthlyTarget: 300000000,
+    monthlyRevenue: 275000000,
+    openHours: '08:00 - 17:30 WIB'
+  },
+  {
+    id: 'store_3',
+    code: 'CBG-TNG-03',
+    name: 'Toko H. Tabingan Teknik (Cabang BSD Tangerang)',
+    address: 'Ruko BSD Multiguna Blok A No. 15, Tangerang Selatan',
+    city: 'Tangerang Selatan',
+    phone: '021-5370-9999',
+    manager: 'Rudi Hartono',
+    type: 'Toko Retail',
+    status: 'Aktif',
+    totalCashiers: 2,
+    monthlyTarget: 250000000,
+    monthlyRevenue: 238000000,
+    openHours: '08:00 - 18:00 WIB'
+  },
+  {
+    id: 'store_4',
+    code: 'CBG-DPK-04',
+    name: 'Outlet Proyek H. Tabingan (Depok Margonda)',
+    address: 'Jl. Margonda Raya No. 120, Depok',
+    city: 'Depok',
+    phone: '021-7720-5544',
+    manager: 'Rian Prasetyo',
+    type: 'Outlet Proyek',
+    status: 'Aktif',
+    totalCashiers: 2,
+    monthlyTarget: 200000000,
+    monthlyRevenue: 192000000,
+    openHours: '08:00 - 17:00 WIB'
+  }
+];
+
 

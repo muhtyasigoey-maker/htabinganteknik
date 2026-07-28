@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TabType, Product, CartItem, Customer, Transaction, StockActivity } from './types';
-import { INITIAL_PRODUCTS, INITIAL_TRANSACTIONS, INITIAL_CUSTOMERS, DEFAULT_CUSTOMER, WAREHOUSES, RECENT_ACTIVITIES } from './data/mockData';
+import { TabType, Product, CartItem, Customer, Transaction, StockActivity, StaffMember, Supplier, StoreBranch, Warehouse } from './types';
+import { INITIAL_PRODUCTS, INITIAL_TRANSACTIONS, INITIAL_CUSTOMERS, DEFAULT_CUSTOMER, INITIAL_WAREHOUSES, RECENT_ACTIVITIES, INITIAL_STAFF, INITIAL_SUPPLIERS, INITIAL_STORES } from './data/mockData';
 
 import { Navigation } from './components/Navigation';
 import { DashboardView } from './components/DashboardView';
@@ -11,7 +11,10 @@ import { ReceiptView } from './components/ReceiptView';
 import { InventoryView } from './components/InventoryView';
 import { CustomersView } from './components/CustomersView';
 import { WarehouseView } from './components/WarehouseView';
+import { StoresView } from './components/StoresView';
 import { ReportsView } from './components/ReportsView';
+import { StaffView } from './components/StaffView';
+import { SuppliersView } from './components/SuppliersView';
 
 import { CustomerModal } from './components/CustomerModal';
 import { ScannerModal } from './components/ScannerModal';
@@ -24,11 +27,16 @@ export function App() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customers, setCustomers] = useState<Customer[]>(INITIAL_CUSTOMERS);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>(INITIAL_WAREHOUSES);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer>(DEFAULT_CUSTOMER);
   const [discount, setDiscount] = useState<number>(0);
   const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
   const [currentTransaction, setCurrentTransaction] = useState<Transaction | null>(null);
   const [stockActivities, setStockActivities] = useState<StockActivity[]>(RECENT_ACTIVITIES);
+  const [staffList, setStaffList] = useState<StaffMember[]>(INITIAL_STAFF);
+  const [suppliers, setSuppliers] = useState<Supplier[]>(INITIAL_SUPPLIERS);
+  const [stores, setStores] = useState<StoreBranch[]>(INITIAL_STORES);
+  const [activeStoreName, setActiveStoreName] = useState<string>('Toko H. Tabingan Teknik (Pusat - Jakarta)');
 
   // Modals & Auth State
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
@@ -42,8 +50,10 @@ export function App() {
   const [currentUser, setCurrentUser] = useState({
     name: 'Admin Utama',
     email: 'admin@tabingan.com',
-    role: 'Administrator POS',
+    role: 'Admin POS',
     avatar: 'AU',
+    shift: 'Full Time',
+    phone: '0812-8899-7700',
   });
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -161,21 +171,35 @@ export function App() {
     setIsOnboardingOpen(true);
   };
 
-  const handleLoginSuccess = (email?: string) => {
+  const handleLoginSuccess = (staffOrEmail?: StaffMember | string) => {
     setIsLoggedIn(true);
-    if (email && email.trim() !== '') {
-      const namePart = email.split('@')[0];
+    if (typeof staffOrEmail === 'object' && staffOrEmail !== null) {
+      setCurrentUser({
+        name: staffOrEmail.name,
+        email: staffOrEmail.email,
+        role: staffOrEmail.role,
+        avatar: staffOrEmail.avatar || staffOrEmail.name.slice(0, 2).toUpperCase(),
+        shift: staffOrEmail.shift || 'Full Time',
+        phone: staffOrEmail.phone || '0812-0000-1111',
+      });
+      showToast(`Berhasil masuk sebagai ${staffOrEmail.name} (${staffOrEmail.role})!`);
+    } else if (typeof staffOrEmail === 'string' && staffOrEmail.trim() !== '') {
+      const namePart = staffOrEmail.split('@')[0];
       const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
       const isA = formattedName.toLowerCase().includes('admin');
       setCurrentUser({
-        name: isA ? 'Admin Utama' : `Kasir (${formattedName})`,
-        email: email,
-        role: isA ? 'Administrator POS' : 'Kasir Operasional',
-        avatar: email.slice(0, 2).toUpperCase(),
+        name: isA ? 'Admin Utama' : `Staff (${formattedName})`,
+        email: staffOrEmail,
+        role: isA ? 'Admin POS' : 'Kasir',
+        avatar: staffOrEmail.slice(0, 2).toUpperCase(),
+        shift: 'Full Time',
+        phone: '0812-0000-1111',
       });
+      showToast(`Berhasil masuk sebagai ${isA ? 'Admin POS' : 'Kasir'}`);
+    } else {
+      showToast('Berhasil masuk ke sistem.');
     }
     setIsOnboardingOpen(false);
-    showToast('Berhasil masuk sebagai kasir.');
     setActiveTab('dashboard');
   };
 
@@ -221,6 +245,82 @@ export function App() {
 
   const handleAddCustomer = (newCust: Customer) => {
     setCustomers((prev) => [...prev, newCust]);
+    showToast(`Pelanggan "${newCust.name}" berhasil ditambahkan`);
+  };
+
+  const handleUpdateCustomer = (updatedCust: Customer) => {
+    setCustomers((prev) => prev.map((c) => (c.id === updatedCust.id ? updatedCust : c)));
+    showToast(`Data pelanggan "${updatedCust.name}" berhasil diperbarui`);
+  };
+
+  const handleDeleteCustomer = (id: string) => {
+    const cust = customers.find((c) => c.id === id);
+    setCustomers((prev) => prev.filter((c) => c.id !== id));
+    showToast(`Pelanggan "${cust?.name || ''}" telah dihapus`);
+  };
+
+  const handleAddWarehouse = (newWh: Warehouse) => {
+    setWarehouses((prev) => [...prev, newWh]);
+    showToast(`Gudang "${newWh.name}" berhasil ditambahkan`);
+  };
+
+  const handleUpdateWarehouse = (updatedWh: Warehouse) => {
+    setWarehouses((prev) => prev.map((w) => (w.id === updatedWh.id ? updatedWh : w)));
+    showToast(`Data gudang "${updatedWh.name}" berhasil diperbarui`);
+  };
+
+  const handleDeleteWarehouse = (id: string) => {
+    const wh = warehouses.find((w) => w.id === id);
+    setWarehouses((prev) => prev.filter((w) => w.id !== id));
+    showToast(`Gudang "${wh?.name || ''}" telah dihapus`);
+  };
+
+  const handleAddStore = (newStore: StoreBranch) => {
+    setStores((prev) => [newStore, ...prev]);
+    showToast(`Cabang "${newStore.name}" berhasil ditambahkan`);
+  };
+
+  const handleUpdateStore = (updatedStore: StoreBranch) => {
+    setStores((prev) => prev.map((s) => (s.id === updatedStore.id ? updatedStore : s)));
+    showToast(`Data cabang "${updatedStore.name}" berhasil diperbarui`);
+  };
+
+  const handleDeleteStore = (id: string) => {
+    const st = stores.find((s) => s.id === id);
+    setStores((prev) => prev.filter((s) => s.id !== id));
+    showToast(`Cabang "${st?.name || ''}" telah dihapus`);
+  };
+
+  const handleAddStaff = (newStaff: StaffMember) => {
+    setStaffList((prev) => [newStaff, ...prev]);
+    showToast('Staff baru berhasil ditambahkan');
+  };
+
+  const handleUpdateStaff = (updated: StaffMember) => {
+    setStaffList((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+    showToast('Data staff berhasil diperbarui');
+  };
+
+  const handleDeleteStaff = (id: string) => {
+    const st = staffList.find((s) => s.id === id);
+    setStaffList((prev) => prev.filter((s) => s.id !== id));
+    showToast(`Staff "${st?.name || ''}" telah dihapus`);
+  };
+
+  const handleAddSupplier = (newSup: Supplier) => {
+    setSuppliers((prev) => [newSup, ...prev]);
+    showToast('Pemasok baru berhasil ditambahkan');
+  };
+
+  const handleUpdateSupplier = (updated: Supplier) => {
+    setSuppliers((prev) => prev.map((sup) => (sup.id === updated.id ? updated : sup)));
+    showToast('Data pemasok berhasil diperbarui');
+  };
+
+  const handleDeleteSupplier = (id: string) => {
+    const sup = suppliers.find((s) => s.id === id);
+    setSuppliers((prev) => prev.filter((s) => s.id !== id));
+    showToast(`Pemasok "${sup?.name || ''}" telah dihapus`);
   };
 
   const handleCompleteCheckout = (newTrx: Transaction) => {
@@ -279,9 +379,11 @@ export function App() {
           <DashboardView
             transactions={transactions}
             userName={currentUser.name}
+            currentUser={currentUser}
             onNavigate={setActiveTab}
             onOpenAddProduct={() => setIsAddProductOpen(true)}
             onOpenStockAction={handleOpenStockAction}
+            onOpenLogin={handleOpenLogin}
           />
         )}
 
@@ -330,7 +432,7 @@ export function App() {
         {activeTab === 'inventory' && (
           <InventoryView
             products={products}
-            warehouses={WAREHOUSES}
+            warehouses={warehouses}
             activities={stockActivities}
             onOpenAddProduct={() => setIsAddProductOpen(true)}
             onOpenScanner={() => setIsScannerOpen(true)}
@@ -342,6 +444,8 @@ export function App() {
           <CustomersView
             customers={customers}
             onAddCustomer={handleAddCustomer}
+            onUpdateCustomer={handleUpdateCustomer}
+            onDeleteCustomer={handleDeleteCustomer}
             onSelectCustomerForPos={(cust) => setSelectedCustomer(cust)}
             onNavigate={setActiveTab}
           />
@@ -349,10 +453,50 @@ export function App() {
 
         {activeTab === 'warehouse' && (
           <WarehouseView
-            warehouses={WAREHOUSES}
+            warehouses={warehouses}
+            onAddWarehouse={handleAddWarehouse}
+            onUpdateWarehouse={handleUpdateWarehouse}
+            onDeleteWarehouse={handleDeleteWarehouse}
             activities={stockActivities}
             products={products}
             onNavigate={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'stores' && (
+          <StoresView
+            stores={stores}
+            onAddStore={handleAddStore}
+            onUpdateStore={handleUpdateStore}
+            onDeleteStore={handleDeleteStore}
+            onSelectStoreForPos={(storeName) => {
+              setActiveStoreName(storeName);
+              showToast(`Toko POS aktif diubah ke "${storeName}"`);
+            }}
+            onNavigate={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'staff' && (
+          <StaffView
+            staffList={staffList}
+            onAddStaff={handleAddStaff}
+            onUpdateStaff={handleUpdateStaff}
+            onDeleteStaff={handleDeleteStaff}
+            onNavigate={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'suppliers' && (
+          <SuppliersView
+            suppliers={suppliers}
+            onAddSupplier={handleAddSupplier}
+            onUpdateSupplier={handleUpdateSupplier}
+            onDeleteSupplier={handleDeleteSupplier}
+            onNavigate={setActiveTab}
+            onOpenStockInWithSupplier={() => {
+              handleOpenStockAction('stock_in');
+            }}
           />
         )}
 
@@ -389,13 +533,14 @@ export function App() {
         onClose={() => setIsOnboardingOpen(false)}
         initialMode={onboardingMode}
         onLoginSuccess={handleLoginSuccess}
+        staffList={staffList}
       />
 
       <StockActionModal
         isOpen={isStockModalOpen}
         initialAction={currentStockAction}
         products={products}
-        warehouses={WAREHOUSES}
+        warehouses={warehouses}
         onClose={() => setIsStockModalOpen(false)}
         onStockIn={handleStockIn}
         onStockOut={handleStockOut}
