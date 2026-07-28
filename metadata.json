@@ -1,0 +1,6 @@
+{
+  "name": "Toko H. Tabingan Teknik",
+  "description": "Aplikasi Kasir POS & Manajemen Inventaris Toko H. Tabingan Teknik",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

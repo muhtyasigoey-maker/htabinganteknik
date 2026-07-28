@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary: #005c55;
+    --color-primary-container: #0f766e;
+    --color-on-primary-container: #a3faef;
+    --color-secondary: #006b5f;
+    --color-secondary-container: #6df5e1;
+    --color-on-secondary-container: #006f64;
+    --color-tertiary: #7f4025;
+    --color-tertiary-container: #9c573a;
+    --color-on-tertiary-container: #ffe5db;
+    --color-tertiary-fixed: #ffdbce;
+    --color-background: #f7faf8;
+    --color-surface: #f7faf8;
+    --color-surface-dim: #d7dbd9;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f1f4f3;
+    --color-surface-container: #ebefed;
+    --color-surface-container-high: #e5e9e7;
+    --color-surface-container-highest: #e0e3e1;
+    --color-on-surface: #181c1c;
+    --color-on-surface-variant: #3e4947;
+    --color-outline: #6e7977;
+    --color-outline-variant: #bdc9c6;
+    --color-error: #ba1a1a;
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Material Symbols Outlined Icon Styling */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Hide scrollbar for clean horizontal filters */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Thermal Receipt Jagged Edge Paper Style */
+.receipt-paper {
+  position: relative;
+  background: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.receipt-paper::before,
+.receipt-paper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-size: 20px 10px;
+  background-repeat: repeat-x;
+}
+
+.receipt-paper::before {
+  top: -10px;
+  background-image: radial-gradient(circle at 10px -5px, transparent 12px, #ffffff 13px);
+}
+
+.receipt-paper::after {
+  bottom: -10px;
+  background-image: radial-gradient(circle at 10px 15px, transparent 12px, #ffffff 13px);
+}
+
+/* Success Checkmark Animation */
+.success-checkmark {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+@keyframes checkmark {
+  0% { stroke-dashoffset: 48; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes checkmark-circle {
+  0% { stroke-dashoffset: 166; }
+  100% { stroke-dashoffset: 0; }
+}
+.path {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #0f766e;
+  fill: none;
+  animation: checkmark-circle 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: checkmark 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+/* Active Payment Card Highlight */
+.active-payment {
+  border-color: #0f766e !important;
+  background-color: #f1f4f3 !important;
+}
+
+/* Indeterminate progress bar */
+.progress-bar-container {
+  width: 160px;
+  height: 4px;
+  background-color: #bdc9c6;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.progress-bar-fill {
+  height: 100%;
+  background-color: #005c55;
+  width: 30%;
+  position: absolute;
+  animation: indeterminate 1.5s infinite linear;
+  border-radius: 2px;
+}
+@keyframes indeterminate {
+  0% { left: -35%; right: 100%; }
+  60% { left: 100%; right: -90%; }
+  100% { left: 100%; right: -90%; }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .receipt-paper, .receipt-paper * {
+    visibility: visible;
+  }
+  .receipt-paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
